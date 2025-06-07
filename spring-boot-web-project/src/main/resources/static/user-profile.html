@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile Form</title>
+    <style>
+        body {
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            margin: 0;
+        }
+        .profile-container {
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            max-width: 400px;
+            margin: 80px auto;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            text-align: left;
+            color: #333;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.7rem;
+            margin-top: 0.3rem;
+            border: 1px solid #fda085;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border 0.2s;
+        }
+        button {
+            background: linear-gradient(90deg, #fda085 0%, #f6d365 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.7rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #f6d365 0%, #fda085 100%);
+        }
+        #result {
+            margin-top: 1.2rem;
+            font-weight: bold;
+            color: #f76d6d;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>User Profile</h2>
+        <form id="profileForm">
+            <label>Name:
+                <input type="text" name="name" required>
+            </label>
+            <label>Address:
+                <input type="text" name="address" required>
+            </label>
+            <label>Password:
+                <input type="password" name="password" required>
+            </label>
+            <button type="submit">Save Profile</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('profileForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const name = e.target.name.value;
+            const address = e.target.address.value;
+            const password = e.target.password.value;
+            const response = await fetch('/api/user-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, address, password })
+            });
+            const text = await response.text();
+            document.getElementById('result').innerText = text;
+        };
+    </script>
+</body>
+</html>
